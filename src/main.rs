@@ -1,19 +1,18 @@
 extern crate csv;
 extern crate ncurses;
 
-// TODO: Rename rdr variable.
 // TODO: Make a test file.
 
 fn main() {
-    let rdr = read_csv_from_arg();
-    if let Err(e) = rdr {
+    let csv_file = read_csv_from_arg();
+    if let Err(e) = csv_file {
         eprintln!("Failed to read CSV file: {}", e);
         std::process::exit(1);
     }
 
     init_ncurses();
 
-    for row in rdr.unwrap().into_records() {
+    for row in csv_file.unwrap().into_records() {
         for record in row.unwrap().iter() {
             ncurses::addstr(&format!("{}\n", record));
         }
