@@ -11,10 +11,8 @@ fn main() {
         std::process::exit(1);
     }
 
-    ncurses::initscr();
-    ncurses::cbreak();
-    ncurses::noecho();
-    ncurses::refresh();
+    init_ncurses();
+
     for row in rdr.unwrap().into_records() {
         for record in row.unwrap().iter() {
             ncurses::addstr(&format!("{}\n", record));
@@ -22,6 +20,13 @@ fn main() {
     }
     ncurses::getch();
     ncurses::endwin();
+}
+
+fn init_ncurses() -> () {
+    ncurses::initscr();
+    ncurses::cbreak();
+    ncurses::noecho();
+    ncurses::refresh();
 }
 
 fn read_csv_from_arg() -> std::result::Result<csv::Reader<std::fs::File>, csv::Error> {
