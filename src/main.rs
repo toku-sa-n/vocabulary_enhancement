@@ -1,9 +1,13 @@
 extern crate csv;
 
 fn main() {
-    let mut rdr = read_csv_from_arg().unwrap();
+    let rdr = read_csv_from_arg();
+    if let Err(e) = rdr {
+        eprintln!("Failed to read CSV file: {}", e);
+        std::process::exit(1);
+    }
 
-    for result in rdr.records() {
+    for result in rdr.unwrap().records() {
         let record = result.expect("a CSV record");
 
         println!("{:?}", record);
