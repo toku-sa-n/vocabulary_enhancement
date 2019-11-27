@@ -16,11 +16,12 @@ fn main() {
     ncurses::noecho();
     ncurses::refresh();
     for row in rdr.unwrap().into_records() {
+        ncurses::clear();
         for record in row.unwrap().iter() {
             ncurses::addstr(&format!("{}\n", record));
         }
+        ncurses::getch();
     }
-    ncurses::getch();
     ncurses::endwin();
 }
 
