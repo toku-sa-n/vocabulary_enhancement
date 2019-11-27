@@ -13,11 +13,12 @@ fn main() {
     init_ncurses();
 
     for row in csv_file.unwrap().into_records() {
+        ncurses::clear();
         for record in row.unwrap().iter() {
             ncurses::addstr(&format!("{}\n", record));
         }
+        ncurses::getch();
     }
-    ncurses::getch();
     ncurses::endwin();
 }
 
