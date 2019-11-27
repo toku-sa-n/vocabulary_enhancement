@@ -2,7 +2,7 @@ extern crate csv;
 extern crate ncurses;
 
 // TODO: Make a test file.
-
+// TODO: Split main function into several functions.
 fn main() {
     let csv_file = read_csv_from_arg();
     if let Err(e) = csv_file {
@@ -14,10 +14,19 @@ fn main() {
 
     for row in csv_file.unwrap().into_records() {
         ncurses::clear();
-        for record in row.unwrap().iter() {
+        let row = row.unwrap();
+        for record in row.iter() {
             ncurses::addstr(&format!("{}\n", record));
         }
-        ncurses::getch();
+
+        for letter in row[1].chars() {
+            // TODO: Remove duplication.
+            let mut input_letter = ncurses::getch();
+            while input_letter != letter as i32 {
+                input_letter = ncurses::getch();
+            }
+            ncurses::addch(letter as u32);
+        }
     }
     ncurses::endwin();
 }
