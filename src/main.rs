@@ -1,4 +1,8 @@
 extern crate csv;
+extern crate ncurses;
+
+// TODO: Rename rdr variable.
+// TODO: Make a test file.
 
 fn main() {
     let rdr = read_csv_from_arg();
@@ -7,11 +11,17 @@ fn main() {
         std::process::exit(1);
     }
 
-    for result in rdr.unwrap().records() {
-        let record = result.expect("a CSV record");
-
-        println!("{:?}", record);
+    ncurses::initscr();
+    ncurses::cbreak();
+    ncurses::noecho();
+    ncurses::refresh();
+    for row in rdr.unwrap().into_records() {
+        for record in row.unwrap().iter() {
+            ncurses::addstr(&format!("{}\n", record));
+        }
     }
+    ncurses::getch();
+    ncurses::endwin();
 }
 
 fn read_csv_from_arg() -> std::result::Result<csv::Reader<std::fs::File>, csv::Error> {
