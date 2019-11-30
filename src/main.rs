@@ -19,11 +19,7 @@ fn main() {
         for column in &row.unwrap() {
             ncurses::addstr(&format!("{}\n", &column));
             for letter in column.chars() {
-                // TODO: Remove duplication.
-                let mut input_letter = ncurses::getch();
-                while input_letter != letter as i32 {
-                    input_letter = ncurses::getch();
-                }
+                while ncurses::getch() != letter as i32 {}
                 ncurses::addch(letter as u32);
             }
             ncurses::addstr("\n");
