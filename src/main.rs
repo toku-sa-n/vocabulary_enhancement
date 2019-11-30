@@ -1,6 +1,7 @@
 extern crate csv;
 extern crate ncurses;
 
+// TODO: Highlight typed character.
 // TODO: Make a test file.
 // TODO: Split main function into several functions.
 fn main() {
@@ -14,18 +15,18 @@ fn main() {
 
     for row in csv_file.unwrap().into_records() {
         ncurses::clear();
-        let row = row.unwrap();
-        for record in row.iter() {
-            ncurses::addstr(&format!("{}\n", record));
-        }
 
-        for letter in row[1].chars() {
-            // TODO: Remove duplication.
-            let mut input_letter = ncurses::getch();
-            while input_letter != letter as i32 {
-                input_letter = ncurses::getch();
+        for column in &row.unwrap() {
+            ncurses::addstr(&format!("{}\n", &column));
+            for letter in column.chars() {
+                // TODO: Remove duplication.
+                let mut input_letter = ncurses::getch();
+                while input_letter != letter as i32 {
+                    input_letter = ncurses::getch();
+                }
+                ncurses::addch(letter as u32);
             }
-            ncurses::addch(letter as u32);
+            ncurses::addstr("\n");
         }
     }
     ncurses::endwin();
